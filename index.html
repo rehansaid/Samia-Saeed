@@ -54,7 +54,7 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
 .bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,240,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
 
 /* Floating orbs */
-.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;opacity:.3}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;opacity:.25}
 .orb-1{width:400px;height:400px;background:var(--cyan);top:-100px;left:-100px;animation:orbFloat 20s ease-in-out infinite}
 .orb-2{width:350px;height:350px;background:var(--purple);bottom:-100px;right:-100px;animation:orbFloat 25s ease-in-out infinite reverse}
 .orb-3{width:250px;height:250px;background:var(--blue);top:50%;left:50%;animation:orbFloat 18s ease-in-out infinite 5s}
@@ -64,14 +64,6 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
 .glass{background:rgba(10,15,40,.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(0,240,255,.12);border-radius:16px}
 .glass-hover{transition:box-shadow .4s,border-color .4s,transform .4s}
 .glass-hover:hover{box-shadow:0 0 30px rgba(0,240,255,.15),inset 0 0 30px rgba(0,240,255,.05);border-color:rgba(0,240,255,.3);transform:translateY(-4px)}
-
-/* Neon text */
-.neon-text{text-shadow:0 0 10px rgba(0,240,255,.5),0 0 40px rgba(0,240,255,.2)}
-
-/* Heartbeat */
-.heartbeat-line{position:absolute;bottom:15%;left:0;width:100%;height:60px;opacity:.15}
-.heartbeat-line path{stroke:var(--cyan);stroke-width:2;fill:none;stroke-dasharray:1000;stroke-dashoffset:1000;animation:drawHeartbeat 4s linear infinite}
-@keyframes drawHeartbeat{to{stroke-dashoffset:0}}
 
 /* Section styling */
 .section-title{font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:.05em}
@@ -105,8 +97,7 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
 .cert-track::-webkit-scrollbar{display:none}
 .cert-card{scroll-snap-align:start;flex:0 0 320px}
 
-/* Lab HUD */
-.hud-line{position:absolute;border:1px solid rgba(0,240,255,.2)}
+/* HUD corners */
 .hud-corner{position:absolute;width:20px;height:20px;border-color:var(--cyan);border-style:solid}
 
 /* Toast */
@@ -117,11 +108,51 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
 .easter-egg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);z-index:9999;font-family:'Orbitron';font-size:2rem;text-align:center;pointer-events:none;opacity:0;transition:transform .5s,opacity .5s}
 .easter-egg.show{transform:translate(-50%,-50%) scale(1);opacity:1}
 
+/* ===== HERO FIXES ===== */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#heroCanvas{position:absolute;inset:0;z-index:0;width:100%;height:100%}
+/* Dark vignette + center clear zone so text reads perfectly */
+.hero-overlay{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(5,5,16,.55) 0%, rgba(5,5,16,.85) 70%, rgba(5,5,16,.97) 100%),
+    linear-gradient(180deg, rgba(5,5,16,.3) 0%, transparent 20%, transparent 80%, rgba(5,5,16,.6) 100%);
+}
+/* Scan line sweep */
+.hero-scanline{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.hero-scanline::after{content:'';position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,240,255,.12),transparent);animation:scanSweep 6s linear infinite}
+@keyframes scanSweep{0%{top:-2px}100%{top:100%}}
+
+.hero-content{position:relative;z-index:5;text-align:center;padding:0 24px;max-width:800px}
+.hero-tag{font-family:'Space Grotesk',sans-serif;font-size:13px;letter-spacing:.35em;text-transform:uppercase;color:var(--cyan);opacity:.9;margin-bottom:20px}
+.hero-name-line1{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(3rem,8vw,6rem);line-height:1;color:#fff;text-shadow:0 0 30px rgba(0,240,255,.25),0 2px 20px rgba(0,0,0,.8);display:block}
+.hero-name-line2{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(3rem,8vw,6rem);line-height:1.05;display:block;background:linear-gradient(135deg,#00f0ff 0%,#0066ff 40%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(0,240,255,.3))}
+.hero-role{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2.5vw,1.25rem);color:#cbd5e1;margin-top:16px;font-weight:400;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.hero-typing{font-family:'Space Grotesk',sans-serif;font-size:15px;color:var(--cyan);margin-top:12px;min-height:24px;text-shadow:0 0 15px rgba(0,240,255,.4)}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:36px}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:14px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-decoration:none;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.cta-primary{background:rgba(0,240,255,.08);border:1.5px solid rgba(0,240,255,.35);color:var(--cyan);backdrop-filter:blur(10px)}
+.cta-primary:hover{background:rgba(0,240,255,.18);border-color:rgba(0,240,255,.6);box-shadow:0 0 30px rgba(0,240,255,.2),0 0 60px rgba(0,240,255,.08);transform:translateY(-2px)}
+.cta-secondary{background:rgba(139,92,246,.08);border:1.5px solid rgba(139,92,246,.3);color:#e2e8f0;backdrop-filter:blur(10px)}
+.cta-secondary:hover{background:rgba(139,92,246,.18);border-color:rgba(139,92,246,.5);box-shadow:0 0 30px rgba(139,92,246,.15);transform:translateY(-2px)}
+.cta-btn .cta-sweep{position:absolute;inset:0;transform:translateX(-100%);transition:transform .6s}
+.cta-btn:hover .cta-sweep{transform:translateX(0)}
+.cta-btn span{position:relative;z-index:2}
+
+/* Heartbeat line - subtle, behind content */
+.heartbeat-line{position:absolute;bottom:12%;left:0;width:100%;height:50px;opacity:.08;z-index:1;pointer-events:none}
+.heartbeat-line path{stroke:var(--cyan);stroke-width:2;fill:none;stroke-dasharray:1000;stroke-dashoffset:1000;animation:drawHeartbeat 4s linear infinite}
+@keyframes drawHeartbeat{to{stroke-dashoffset:0}}
+
+/* Scroll indicator */
+.scroll-indicator{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:5;opacity:.5}
+.scroll-indicator span{font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--dim);letter-spacing:.2em}
+.scroll-mouse{width:20px;height:32px;border:1.5px solid rgba(0,240,255,.35);border-radius:10px;display:flex;justify-content:center;padding-top:6px}
+.scroll-dot{width:3px;height:7px;background:var(--cyan);border-radius:3px;animation:scrollBounce 2s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(8px);opacity:.3}}
+
 /* Mobile cursor fix */
 @media(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring,.cursor-glow{display:none}}
 @media(max-width:768px){.timeline-line{left:20px}.timeline-node{left:20px}}
-
-/* Reduce motion */
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -158,7 +189,7 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
 <!-- Navigation -->
 <nav id="nav" class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <a href="#hero" class="font-orbitron text-lg font-bold tracking-wider text-cy-cyan neon-text">SS</a>
+        <a href="#hero" class="font-orbitron text-lg font-bold tracking-wider text-cy-cyan" style="text-shadow:0 0 12px rgba(0,240,255,.4)">SS</a>
         <div class="hidden md:flex items-center gap-8">
             <a href="#about" class="nav-link text-sm font-space text-cy-dim">About</a>
             <a href="#skills" class="nav-link text-sm font-space text-cy-dim">Skills</a>
@@ -169,7 +200,6 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
         </div>
         <button id="mobileMenuBtn" class="md:hidden text-cy-cyan text-xl" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
     </div>
-    <!-- Mobile menu -->
     <div id="mobileMenu" class="hidden md:hidden mt-4 glass p-6 flex flex-col gap-4">
         <a href="#about" class="nav-link text-sm font-space text-cy-dim mobile-nav-link">About</a>
         <a href="#skills" class="nav-link text-sm font-space text-cy-dim mobile-nav-link">Skills</a>
@@ -180,48 +210,46 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
     </div>
 </nav>
 
-<!-- Hero Section -->
-<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <canvas id="heroCanvas" class="absolute inset-0 z-0"></canvas>
-    <!-- Heartbeat SVG -->
+<!-- ===== HERO SECTION (FIXED) ===== -->
+<section id="hero">
+    <canvas id="heroCanvas"></canvas>
+    <!-- Vignette overlay: darkens edges, keeps center semi-clear for 3D, but ensures text contrast -->
+    <div class="hero-overlay"></div>
+    <!-- Subtle scan line -->
+    <div class="hero-scanline"></div>
+    <!-- Heartbeat ECG -->
     <svg class="heartbeat-line" viewBox="0 0 1200 60" preserveAspectRatio="none">
         <path d="M0,30 L200,30 L220,30 L230,10 L240,50 L250,5 L260,55 L270,30 L290,30 L500,30 L520,30 L530,10 L540,50 L550,5 L560,55 L570,30 L590,30 L800,30 L820,30 L830,10 L840,50 L850,5 L860,55 L870,30 L890,30 L1200,30"/>
     </svg>
-    <div class="relative z-10 text-center px-6 max-w-4xl">
-        <div class="overflow-hidden mb-4">
-            <p id="heroTag" class="font-space text-cy-cyan text-sm tracking-[.4em] uppercase opacity-0 translate-y-8">Medical Laboratory Technologist</p>
+
+    <!-- Hero Content - high z-index, solid text rendering -->
+    <div class="hero-content" id="heroContent">
+        <p class="hero-tag" id="heroTag" style="opacity:0;transform:translateY(20px)">Medical Laboratory Technologist</p>
+        <h1 id="heroName" style="opacity:0;transform:translateY(30px)">
+            <span class="hero-name-line1">Samia</span>
+            <span class="hero-name-line2">Saeed</span>
+        </h1>
+        <p class="hero-role" id="heroSub" style="opacity:0;transform:translateY(20px)">Patient Support Professional</p>
+        <div class="hero-typing" id="typingLine" style="opacity:0;transform:translateY(15px)">
+            <span id="typingContent"></span><span class="typing-cursor"></span>
         </div>
-        <div class="overflow-hidden">
-            <h1 id="heroName" class="font-orbitron text-5xl sm:text-7xl md:text-8xl font-900 leading-none mb-6 opacity-0 translate-y-12">
-                <span class="block">Samia</span>
-                <span class="block bg-gradient-to-r from-cy-cyan via-cy-blue to-cy-purple bg-clip-text text-transparent">Saeed</span>
-            </h1>
-        </div>
-        <div class="overflow-hidden mb-3">
-            <p id="heroSub" class="font-poppins text-lg sm:text-xl text-cy-dim opacity-0 translate-y-8">Patient Support Professional</p>
-        </div>
-        <div class="h-8 mb-10 overflow-hidden">
-            <p id="typingText" class="font-space text-cy-cyan text-sm opacity-0 translate-y-8">
-                <span id="typingContent"></span><span class="typing-cursor"></span>
-            </p>
-        </div>
-        <div id="heroCTA" class="flex flex-wrap gap-4 justify-center opacity-0 translate-y-8">
-            <a href="#about" class="glass glass-hover px-8 py-3 font-orbitron text-xs tracking-wider text-cy-cyan border-cy-cyan/30 relative overflow-hidden group">
-                <span class="relative z-10">EXPLORE PORTFOLIO</span>
-                <div class="absolute inset-0 bg-gradient-to-r from-cy-cyan/10 to-cy-purple/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+        <div class="hero-ctas" id="heroCTA" style="opacity:0;transform:translateY(20px)">
+            <a href="#about" class="cta-btn cta-primary">
+                <div class="cta-sweep" style="background:linear-gradient(90deg,rgba(0,240,255,.1),rgba(0,102,255,.1))"></div>
+                <span>EXPLORE PORTFOLIO</span>
+                <i class="fa-solid fa-arrow-right text-xs" style="position:relative;z-index:2"></i>
             </a>
-            <a href="#contact" class="glass glass-hover px-8 py-3 font-orbitron text-xs tracking-wider text-white border-white/10 relative overflow-hidden group">
-                <span class="relative z-10">CONTACT ME</span>
-                <div class="absolute inset-0 bg-gradient-to-r from-cy-purple/10 to-cy-pink/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+            <a href="#contact" class="cta-btn cta-secondary">
+                <div class="cta-sweep" style="background:linear-gradient(90deg,rgba(139,92,246,.1),rgba(236,72,153,.1))"></div>
+                <span>CONTACT ME</span>
+                <i class="fa-solid fa-paper-plane text-xs" style="position:relative;z-index:2"></i>
             </a>
         </div>
     </div>
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 opacity-60">
-        <span class="font-space text-xs text-cy-dim tracking-wider">SCROLL</span>
-        <div class="w-5 h-8 border border-cy-cyan/40 rounded-full flex justify-center pt-1">
-            <div class="w-1 h-2 bg-cy-cyan rounded-full animate-bounce"></div>
-        </div>
+
+    <div class="scroll-indicator">
+        <span>SCROLL</span>
+        <div class="scroll-mouse"><div class="scroll-dot"></div></div>
     </div>
 </section>
 
@@ -229,26 +257,22 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
 <section id="about" class="relative py-32 px-6 z-10">
     <div class="max-w-6xl mx-auto">
         <div class="flex flex-col lg:flex-row gap-16 items-center">
-            <!-- Profile Image -->
             <div class="lg:w-1/3 flex justify-center about-reveal">
                 <div class="relative">
                     <div class="w-64 h-64 rounded-2xl overflow-hidden border-2 border-cy-cyan/30 relative" style="box-shadow:0 0 40px rgba(0,240,255,.15),0 0 80px rgba(0,240,255,.05)">
                         <img src="https://picsum.photos/seed/samia-med-lab/400/400.jpg" alt="Samia Saeed" class="w-full h-full object-cover" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-cy-bg/80 via-transparent to-transparent"></div>
                     </div>
-                    <!-- Rotating border glow -->
                     <div class="absolute -inset-2 rounded-2xl border border-cy-cyan/20 animate-spin" style="animation-duration:8s;border-style:dashed"></div>
-                    <!-- Floating icons -->
                     <i class="fa-solid fa-microscope float-icon absolute -top-6 -right-6" style="animation-delay:0s"></i>
                     <i class="fa-solid fa-vial float-icon absolute -bottom-4 -left-4" style="animation-delay:1s;color:var(--purple)"></i>
                     <i class="fa-solid fa-dna float-icon absolute top-1/2 -right-10" style="animation-delay:2s"></i>
                 </div>
             </div>
-            <!-- Content -->
             <div class="lg:w-2/3">
                 <div class="about-reveal">
                     <p class="font-orbitron text-xs tracking-[.3em] text-cy-cyan mb-4">ABOUT ME</p>
-                    <h2 class="section-title text-3xl sm:text-4xl mb-2">Precision in Every</h2>
+                    <h2 class="section-title text-3xl sm:text-4xl mb-2 text-white">Precision in Every</h2>
                     <h2 class="section-title text-3xl sm:text-4xl bg-gradient-to-r from-cy-cyan to-cy-purple bg-clip-text text-transparent mb-6">Analysis</h2>
                     <div class="section-line mb-8"></div>
                 </div>
@@ -273,14 +297,12 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-16 skill-reveal">
             <p class="font-orbitron text-xs tracking-[.3em] text-cy-cyan mb-4">COMPETENCIES</p>
-            <h2 class="section-title text-3xl sm:text-4xl mb-2">Technical Arsenal</h2>
+            <h2 class="section-title text-3xl sm:text-4xl mb-2 text-white">Technical Arsenal</h2>
             <h2 class="section-title text-3xl sm:text-4xl bg-gradient-to-r from-cy-cyan to-cy-purple bg-clip-text text-transparent mb-6">Lab Mastery</h2>
             <div class="section-line mx-auto mb-6"></div>
             <p class="text-cy-dim font-poppins text-sm max-w-xl mx-auto">Comprehensive expertise across multiple laboratory disciplines, powered by precision instruments and evidence-based methodology.</p>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6" id="skillsGrid">
-            <!-- Skills will be injected by JS -->
-        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6" id="skillsGrid"></div>
     </div>
 </section>
 
@@ -289,13 +311,12 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
     <div class="max-w-5xl mx-auto">
         <div class="text-center mb-20 exp-reveal">
             <p class="font-orbitron text-xs tracking-[.3em] text-cy-cyan mb-4">CAREER PATH</p>
-            <h2 class="section-title text-3xl sm:text-4xl mb-2">Professional</h2>
+            <h2 class="section-title text-3xl sm:text-4xl mb-2 text-white">Professional</h2>
             <h2 class="section-title text-3xl sm:text-4xl bg-gradient-to-r from-cy-cyan to-cy-purple bg-clip-text text-transparent mb-6">Journey</h2>
             <div class="section-line mx-auto"></div>
         </div>
         <div class="relative" id="timeline">
             <div class="timeline-line hidden md:block"></div>
-            <!-- Timeline items injected by JS -->
         </div>
     </div>
 </section>
@@ -305,18 +326,16 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
     <div class="max-w-4xl mx-auto">
         <div class="text-center mb-16 edu-reveal">
             <p class="font-orbitron text-xs tracking-[.3em] text-cy-cyan mb-4">ACADEMICS</p>
-            <h2 class="section-title text-3xl sm:text-4xl mb-2">Educational</h2>
+            <h2 class="section-title text-3xl sm:text-4xl mb-2 text-white">Educational</h2>
             <h2 class="section-title text-3xl sm:text-4xl bg-gradient-to-r from-cy-cyan to-cy-purple bg-clip-text text-transparent mb-6">Foundation</h2>
             <div class="section-line mx-auto"></div>
         </div>
         <div class="edu-reveal">
             <div class="glass glass-hover p-8 sm:p-12 relative overflow-hidden group">
-                <!-- HUD corners -->
                 <div class="hud-corner top-0 left-0 border-t-2 border-l-2 border-cy-cyan/40"></div>
                 <div class="hud-corner top-0 right-0 border-t-2 border-r-2 border-cy-purple/40"></div>
                 <div class="hud-corner bottom-0 left-0 border-b-2 border-l-2 border-cy-purple/40"></div>
                 <div class="hud-corner bottom-0 right-0 border-b-2 border-r-2 border-cy-cyan/40"></div>
-                <!-- Graduation particles -->
                 <div class="absolute top-4 right-4 flex gap-1 opacity-30">
                     <i class="fa-solid fa-star text-cy-cyan text-xs animate-pulse"></i>
                     <i class="fa-solid fa-star text-cy-purple text-xs animate-pulse" style="animation-delay:.3s"></i>
@@ -337,7 +356,6 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
                     <span class="flex items-center gap-2"><i class="fa-solid fa-award text-cy-green"></i>4-Year Degree Program</span>
                 </div>
                 <p class="text-cy-dim font-poppins text-sm mt-4 leading-relaxed">Comprehensive four-year program covering clinical pathology, hematology, microbiology, biochemistry, histopathology, molecular biology, and laboratory management with extensive hands-on clinical rotations.</p>
-                <!-- Glow sweep -->
                 <div class="absolute inset-0 bg-gradient-to-r from-transparent via-cy-cyan/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
             </div>
         </div>
@@ -349,40 +367,32 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-16 cert-reveal">
             <p class="font-orbitron text-xs tracking-[.3em] text-cy-cyan mb-4">CREDENTIALS</p>
-            <h2 class="section-title text-3xl sm:text-4xl mb-2">Certifications &</h2>
+            <h2 class="section-title text-3xl sm:text-4xl mb-2 text-white">Certifications &</h2>
             <h2 class="section-title text-3xl sm:text-4xl bg-gradient-to-r from-cy-cyan to-cy-purple bg-clip-text text-transparent mb-6">Workshops</h2>
             <div class="section-line mx-auto"></div>
         </div>
         <div class="cert-reveal">
             <div class="cert-track px-4" id="certTrack">
                 <div class="cert-card glass glass-hover p-6 relative overflow-hidden group" style="transform-style:preserve-3d;transition:transform .5s">
-                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cy-cyan/20 to-cy-blue/20 flex items-center justify-center mb-4 border border-cy-cyan/20">
-                        <i class="fa-solid fa-dna text-cy-cyan text-lg"></i>
-                    </div>
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cy-cyan/20 to-cy-blue/20 flex items-center justify-center mb-4 border border-cy-cyan/20"><i class="fa-solid fa-dna text-cy-cyan text-lg"></i></div>
                     <h3 class="font-orbitron text-sm font-bold text-white mb-2">Primer Designing Course</h3>
                     <p class="text-cy-dim font-poppins text-xs leading-relaxed">Advanced techniques in designing oligonucleotide primers for PCR amplification, including sequence analysis, Tm calculation, and specificity optimization.</p>
                     <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-cy-cyan/10 to-transparent rounded-bl-full"></div>
                 </div>
                 <div class="cert-card glass glass-hover p-6 relative overflow-hidden group" style="transform-style:preserve-3d;transition:transform .5s">
-                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cy-purple/20 to-cy-pink/20 flex items-center justify-center mb-4 border border-cy-purple/20">
-                        <i class="fa-solid fa-laptop-code text-cy-purple text-lg"></i>
-                    </div>
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cy-purple/20 to-cy-pink/20 flex items-center justify-center mb-4 border border-cy-purple/20"><i class="fa-solid fa-laptop-code text-cy-purple text-lg"></i></div>
                     <h3 class="font-orbitron text-sm font-bold text-white mb-2">Bioinformatics Workshop</h3>
                     <p class="text-cy-dim font-poppins text-xs leading-relaxed">Hands-on training in bioinformatics tools, sequence alignment algorithms, phylogenetic analysis, and database mining for genomic research applications.</p>
                     <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-cy-purple/10 to-transparent rounded-bl-full"></div>
                 </div>
                 <div class="cert-card glass glass-hover p-6 relative overflow-hidden group" style="transform-style:preserve-3d;transition:transform .5s">
-                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cy-green/20 to-cy-cyan/20 flex items-center justify-center mb-4 border border-cy-green/20">
-                        <i class="fa-solid fa-computer text-cy-green text-lg"></i>
-                    </div>
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cy-green/20 to-cy-cyan/20 flex items-center justify-center mb-4 border border-cy-green/20"><i class="fa-solid fa-computer text-cy-green text-lg"></i></div>
                     <h3 class="font-orbitron text-sm font-bold text-white mb-2">Computer Courses</h3>
                     <p class="text-cy-dim font-poppins text-xs leading-relaxed">Proficiency in Microsoft Office Suite, digital data management systems, laboratory information systems (LIS), and electronic health record platforms.</p>
                     <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-cy-green/10 to-transparent rounded-bl-full"></div>
                 </div>
                 <div class="cert-card glass glass-hover p-6 relative overflow-hidden group" style="transform-style:preserve-3d;transition:transform .5s">
-                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cy-pink/20 to-cy-purple/20 flex items-center justify-center mb-4 border border-cy-pink/20">
-                        <i class="fa-solid fa-shield-virus text-cy-pink text-lg"></i>
-                    </div>
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cy-pink/20 to-cy-purple/20 flex items-center justify-center mb-4 border border-cy-pink/20"><i class="fa-solid fa-shield-virus text-cy-pink text-lg"></i></div>
                     <h3 class="font-orbitron text-sm font-bold text-white mb-2">Biosafety Training</h3>
                     <p class="text-cy-dim font-poppins text-xs leading-relaxed">Comprehensive biosafety level protocols, infection control measures, PPE usage, waste management, and emergency response procedures.</p>
                     <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-cy-pink/10 to-transparent rounded-bl-full"></div>
@@ -401,7 +411,7 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-16 lab-reveal">
             <p class="font-orbitron text-xs tracking-[.3em] text-cy-cyan mb-4">IMMERSIVE EXPERIENCE</p>
-            <h2 class="section-title text-3xl sm:text-4xl mb-2">Virtual</h2>
+            <h2 class="section-title text-3xl sm:text-4xl mb-2 text-white">Virtual</h2>
             <h2 class="section-title text-3xl sm:text-4xl bg-gradient-to-r from-cy-cyan to-cy-purple bg-clip-text text-transparent mb-6">Laboratory</h2>
             <div class="section-line mx-auto mb-6"></div>
             <p class="text-cy-dim font-poppins text-sm">Drag to rotate the scene. Explore the molecular world.</p>
@@ -409,7 +419,6 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
         <div class="lab-reveal relative">
             <div class="glass overflow-hidden relative" style="box-shadow:0 0 60px rgba(0,240,255,.08)">
                 <canvas id="labCanvas" class="w-full" style="height:500px"></canvas>
-                <!-- HUD overlay -->
                 <div class="hud-corner absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-cy-cyan/50"></div>
                 <div class="hud-corner absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-cy-cyan/50"></div>
                 <div class="hud-corner absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-cy-cyan/50"></div>
@@ -427,7 +436,7 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
     <div class="max-w-4xl mx-auto">
         <div class="text-center mb-16 contact-reveal">
             <p class="font-orbitron text-xs tracking-[.3em] text-cy-cyan mb-4">GET IN TOUCH</p>
-            <h2 class="section-title text-3xl sm:text-4xl mb-2">Let's</h2>
+            <h2 class="section-title text-3xl sm:text-4xl mb-2 text-white">Let's</h2>
             <h2 class="section-title text-3xl sm:text-4xl bg-gradient-to-r from-cy-cyan to-cy-purple bg-clip-text text-transparent mb-6">Connect</h2>
             <div class="section-line mx-auto"></div>
         </div>
@@ -437,36 +446,19 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
             <div class="hud-corner bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-cy-purple/30"></div>
             <div class="hud-corner bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-cy-cyan/30"></div>
             <div class="grid sm:grid-cols-2 gap-8">
-                <!-- Contact Info -->
                 <div class="space-y-6">
                     <div class="flex items-start gap-4 group">
-                        <div class="w-10 h-10 rounded-lg bg-cy-cyan/10 flex items-center justify-center flex-shrink-0 border border-cy-cyan/20 group-hover:border-cy-cyan/50 transition-colors">
-                            <i class="fa-solid fa-phone text-cy-cyan text-sm"></i>
-                        </div>
-                        <div>
-                            <p class="font-orbitron text-xs text-cy-dim mb-1">PHONE</p>
-                            <p class="text-white text-sm font-space">+92 319 3422177</p>
-                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-cy-cyan/10 flex items-center justify-center flex-shrink-0 border border-cy-cyan/20 group-hover:border-cy-cyan/50 transition-colors"><i class="fa-solid fa-phone text-cy-cyan text-sm"></i></div>
+                        <div><p class="font-orbitron text-xs text-cy-dim mb-1">PHONE</p><p class="text-white text-sm font-space">+92 319 3422177</p></div>
                     </div>
                     <div class="flex items-start gap-4 group">
-                        <div class="w-10 h-10 rounded-lg bg-cy-purple/10 flex items-center justify-center flex-shrink-0 border border-cy-purple/20 group-hover:border-cy-purple/50 transition-colors">
-                            <i class="fa-solid fa-envelope text-cy-purple text-sm"></i>
-                        </div>
-                        <div>
-                            <p class="font-orbitron text-xs text-cy-dim mb-1">EMAIL</p>
-                            <p class="text-white text-sm font-space">samiaasaeed786@gmail.com</p>
-                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-cy-purple/10 flex items-center justify-center flex-shrink-0 border border-cy-purple/20 group-hover:border-cy-purple/50 transition-colors"><i class="fa-solid fa-envelope text-cy-purple text-sm"></i></div>
+                        <div><p class="font-orbitron text-xs text-cy-dim mb-1">EMAIL</p><p class="text-white text-sm font-space">samiaasaeed786@gmail.com</p></div>
                     </div>
                     <div class="flex items-start gap-4 group">
-                        <div class="w-10 h-10 rounded-lg bg-cy-green/10 flex items-center justify-center flex-shrink-0 border border-cy-green/20 group-hover:border-cy-green/50 transition-colors">
-                            <i class="fa-solid fa-location-dot text-cy-green text-sm"></i>
-                        </div>
-                        <div>
-                            <p class="font-orbitron text-xs text-cy-dim mb-1">LOCATION</p>
-                            <p class="text-white text-sm font-space">Rawalpindi, Pakistan</p>
-                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-cy-green/10 flex items-center justify-center flex-shrink-0 border border-cy-green/20 group-hover:border-cy-green/50 transition-colors"><i class="fa-solid fa-location-dot text-cy-green text-sm"></i></div>
+                        <div><p class="font-orbitron text-xs text-cy-dim mb-1">LOCATION</p><p class="text-white text-sm font-space">Rawalpindi, Pakistan</p></div>
                     </div>
-                    <!-- Social Links -->
                     <div class="flex gap-3 pt-4">
                         <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-cy-dim hover:text-cy-cyan hover:border-cy-cyan/30 transition-all" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in text-sm"></i></a>
                         <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-cy-dim hover:text-cy-cyan hover:border-cy-cyan/30 transition-all" aria-label="GitHub"><i class="fa-brands fa-github text-sm"></i></a>
@@ -474,7 +466,6 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
                         <a href="mailto:samiaasaeed786@gmail.com" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-cy-dim hover:text-cy-purple hover:border-cy-purple/30 transition-all" aria-label="Email"><i class="fa-solid fa-paper-plane text-sm"></i></a>
                     </div>
                 </div>
-                <!-- Contact Form -->
                 <form id="contactForm" class="space-y-5">
                     <div class="relative">
                         <input type="text" id="nameInput" required class="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3 text-sm font-space text-white focus:outline-none focus:border-cy-cyan/50 transition-colors peer placeholder-transparent" placeholder="Name">
@@ -502,7 +493,6 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
 <footer class="relative py-12 px-6 z-10 border-t border-white/5">
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-            <!-- Heartbeat pulse -->
             <div class="relative flex items-center justify-center">
                 <i class="fa-solid fa-heart-pulse text-cy-cyan text-lg"></i>
                 <div class="absolute inset-0 rounded-full bg-cy-cyan/20 animate-ping" style="animation-duration:2s"></div>
@@ -523,7 +513,7 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:#fff;over
 
 <!-- Easter Egg -->
 <div id="easterEgg" class="easter-egg">
-    <p class="text-cy-cyan neon-text mb-2">You found it!</p>
+    <p class="text-cy-cyan mb-2" style="text-shadow:0 0 20px rgba(0,240,255,.5)">You found it!</p>
     <p class="text-cy-dim text-sm font-poppins">Science never sleeps.</p>
 </div>
 
@@ -543,48 +533,53 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-/* ===== Hero DNA Scene ===== */
+/* ===== Hero DNA Scene — FIXED: offset to right side, smaller, less bloom ===== */
 (function initHeroScene() {
     const canvas = document.getElementById('heroCanvas');
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 6);
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 7);
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Bloom
+    // REDUCED bloom so it doesn't wash out the text area
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.4, 0.2);
+    const bloom = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        0.8,   // strength reduced from 1.2
+        0.6,   // radius increased slightly for softer glow
+        0.35   // threshold raised to only bloom the brightest elements
+    );
     composer.addPass(bloom);
 
-    // Lights
-    scene.add(new THREE.AmbientLight(0x111133, 0.5));
-    const light1 = new THREE.PointLight(0x00f0ff, 3, 20);
-    light1.position.set(3, 2, 4);
+    // Softer ambient
+    scene.add(new THREE.AmbientLight(0x111133, 0.3));
+    const light1 = new THREE.PointLight(0x00f0ff, 2, 20);
+    light1.position.set(4, 3, 5);
     scene.add(light1);
-    const light2 = new THREE.PointLight(0x8b5cf6, 2, 20);
-    light2.position.set(-3, -2, 4);
+    const light2 = new THREE.PointLight(0x8b5cf6, 1.5, 20);
+    light2.position.set(-4, -2, 5);
     scene.add(light2);
 
-    // DNA Group
+    // DNA Group — OFFSET to the right so it doesn't sit behind text
     const dnaGroup = new THREE.Group();
+    dnaGroup.position.x = 2.5;   // Push DNA to the right
     scene.add(dnaGroup);
 
-    const numNodes = 80;
-    const helixRadius = 1.2;
-    const helixHeight = 8;
-    const sphereGeo = new THREE.SphereGeometry(Math.max(0.001, 0.08), 12, 12);
-    const cyanMat = new THREE.MeshStandardMaterial({ color: 0x00f0ff, emissive: 0x00f0ff, emissiveIntensity: 0.8, metalness: 0.5, roughness: 0.3 });
-    const purpleMat = new THREE.MeshStandardMaterial({ color: 0x8b5cf6, emissive: 0x8b5cf6, emissiveIntensity: 0.8, metalness: 0.5, roughness: 0.3 });
-    const barMat = new THREE.MeshStandardMaterial({ color: 0x224466, emissive: 0x00f0ff, emissiveIntensity: 0.15, metalness: 0.3, roughness: 0.5, transparent: true, opacity: 0.4 });
+    const numNodes = 70;
+    const helixRadius = 0.9;    // Slightly smaller
+    const helixHeight = 7;
+    const sphereGeo = new THREE.SphereGeometry(Math.max(0.001, 0.06), 10, 10);
+    const cyanMat = new THREE.MeshStandardMaterial({ color: 0x00f0ff, emissive: 0x00f0ff, emissiveIntensity: 0.5, metalness: 0.5, roughness: 0.3 });
+    const purpleMat = new THREE.MeshStandardMaterial({ color: 0x8b5cf6, emissive: 0x8b5cf6, emissiveIntensity: 0.5, metalness: 0.5, roughness: 0.3 });
+    const barMat = new THREE.MeshStandardMaterial({ color: 0x224466, emissive: 0x00f0ff, emissiveIntensity: 0.1, metalness: 0.3, roughness: 0.5, transparent: true, opacity: 0.3 });
 
     for (let i = 0; i < numNodes; i++) {
         const t = (i / numNodes) * Math.PI * 4;
         const y = (i / numNodes - 0.5) * helixHeight;
-
         const x1 = Math.cos(t) * helixRadius;
         const z1 = Math.sin(t) * helixRadius;
         const x2 = Math.cos(t + Math.PI) * helixRadius;
@@ -598,21 +593,20 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
         s2.position.set(x2, y, z2);
         dnaGroup.add(s2);
 
-        // Connecting bars every 4 nodes
         if (i % 4 === 0) {
             const start = new THREE.Vector3(x1, y, z1);
             const end = new THREE.Vector3(x2, y, z2);
             const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
             const len = Math.max(0.001, start.distanceTo(end));
             const dir = new THREE.Vector3().subVectors(end, start).normalize();
-            const bar = new THREE.Mesh(new THREE.CylinderGeometry(Math.max(0.001, 0.02), Math.max(0.001, 0.02), len, 6), barMat);
+            const bar = new THREE.Mesh(new THREE.CylinderGeometry(Math.max(0.001, 0.015), Math.max(0.001, 0.015), len, 6), barMat);
             bar.position.copy(mid);
             bar.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
             dnaGroup.add(bar);
         }
     }
 
-    // Helix backbone curves
+    // Backbone curves
     const curvePoints1 = [], curvePoints2 = [];
     for (let i = 0; i <= 200; i++) {
         const t = (i / 200) * Math.PI * 4;
@@ -622,26 +616,24 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
     }
     const curveGeo1 = new THREE.BufferGeometry().setFromPoints(curvePoints1);
     const curveGeo2 = new THREE.BufferGeometry().setFromPoints(curvePoints2);
-    const lineMat1 = new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.3 });
-    const lineMat2 = new THREE.LineBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.3 });
-    dnaGroup.add(new THREE.Line(curveGeo1, lineMat1));
-    dnaGroup.add(new THREE.Line(curveGeo2, lineMat2));
+    dnaGroup.add(new THREE.Line(curveGeo1, new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.2 })));
+    dnaGroup.add(new THREE.Line(curveGeo2, new THREE.LineBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.2 })));
 
-    // Floating particles around DNA
-    const particleCount = 600;
+    // Particles — spread wider, lower opacity
+    const particleCount = 400;
     const pPositions = new Float32Array(particleCount * 3);
     const pColors = new Float32Array(particleCount * 3);
-    const cyan = new THREE.Color(0x00f0ff);
-    const purple = new THREE.Color(0x8b5cf6);
-    const blue = new THREE.Color(0x0066ff);
+    const cyanC = new THREE.Color(0x00f0ff);
+    const purpleC = new THREE.Color(0x8b5cf6);
+    const blueC = new THREE.Color(0x0066ff);
     for (let i = 0; i < particleCount; i++) {
-        const r = 2 + Math.random() * 5;
+        const r = 3 + Math.random() * 6;
         const theta = Math.random() * Math.PI * 2;
         const phi = Math.random() * Math.PI;
-        pPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+        pPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta) + 1.5;
         pPositions[i * 3 + 1] = (Math.random() - 0.5) * 10;
         pPositions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
-        const c = [cyan, purple, blue][Math.floor(Math.random() * 3)];
+        const c = [cyanC, purpleC, blueC][Math.floor(Math.random() * 3)];
         pColors[i * 3] = c.r;
         pColors[i * 3 + 1] = c.g;
         pColors[i * 3 + 2] = c.b;
@@ -649,32 +641,30 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
     pGeo.setAttribute('color', new THREE.BufferAttribute(pColors, 3));
-    const pMat = new THREE.PointsMaterial({ size: 0.03, vertexColors: true, transparent: true, opacity: 0.7, sizeAttenuation: true });
+    const pMat = new THREE.PointsMaterial({ size: 0.025, vertexColors: true, transparent: true, opacity: 0.4, sizeAttenuation: true });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
 
-    // Mouse interaction for particles
     let mouseX = 0, mouseY = 0;
     document.addEventListener('mousemove', (e) => {
         mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
         mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
     });
 
-    // Animation
     const clock = new THREE.Clock();
     function animate() {
         requestAnimationFrame(animate);
         const t = clock.getElapsedTime();
-        dnaGroup.rotation.y = t * 0.3;
-        dnaGroup.rotation.x = Math.sin(t * 0.2) * 0.1;
-        particles.rotation.y = t * 0.05;
-        particles.rotation.x = mouseY * 0.1;
-        camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.02;
-        camera.position.y += (-mouseY * 0.3 - camera.position.y) * 0.02;
-        camera.lookAt(0, 0, 0);
-        light1.position.x = Math.sin(t) * 4;
+        dnaGroup.rotation.y = t * 0.25;
+        dnaGroup.rotation.x = Math.sin(t * 0.15) * 0.08;
+        particles.rotation.y = t * 0.04;
+        particles.rotation.x = mouseY * 0.05;
+        camera.position.x += (mouseX * 0.3 - camera.position.x) * 0.015;
+        camera.position.y += (-mouseY * 0.2 - camera.position.y) * 0.015;
+        camera.lookAt(1, 0, 0);  // Look slightly right toward DNA
+        light1.position.x = Math.sin(t) * 4 + 2;
         light1.position.y = Math.cos(t * 0.7) * 3;
-        light2.position.x = Math.cos(t * 0.5) * 4;
+        light2.position.x = Math.cos(t * 0.5) * 4 - 1;
         light2.position.y = Math.sin(t * 0.8) * 3;
         composer.render();
     }
@@ -696,22 +686,17 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
     const h = 500;
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x050510, 0.08);
-
     const camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 100);
     camera.position.set(0, 2, 8);
-
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setSize(w, h);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x050510, 1);
 
-    // Bloom
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(w, h), 1.0, 0.5, 0.3);
-    composer.addPass(bloomPass);
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(w, h), 1.0, 0.5, 0.3));
 
-    // Controls
     const controls = new OrbitControls(camera, canvas);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
@@ -721,7 +706,6 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.5;
 
-    // Lights
     scene.add(new THREE.AmbientLight(0x111133, 0.4));
     const spotLight = new THREE.SpotLight(0x00f0ff, 5, 30, Math.PI / 6, 0.5);
     spotLight.position.set(0, 8, 0);
@@ -733,7 +717,6 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
     pLight2.position.set(-4, -1, 4);
     scene.add(pLight2);
 
-    // Test tubes
     const tubeMat = new THREE.MeshPhysicalMaterial({ color: 0x88ccff, transparent: true, opacity: 0.25, metalness: 0.1, roughness: 0.1, transmission: 0.6, thickness: 0.5 });
     const liquidMat = new THREE.MeshStandardMaterial({ color: 0x00f0ff, emissive: 0x00f0ff, emissiveIntensity: 0.4, transparent: true, opacity: 0.6 });
     const liquidMat2 = new THREE.MeshStandardMaterial({ color: 0x8b5cf6, emissive: 0x8b5cf6, emissiveIntensity: 0.4, transparent: true, opacity: 0.6 });
@@ -744,32 +727,20 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
     const liquidMats = [liquidMat, liquidMat2, liquidMat, liquidMat3];
     tubePositions.forEach((pos, i) => {
         const group = new THREE.Group();
-        // Tube outer
-        const tube = new THREE.Mesh(new THREE.CylinderGeometry(Math.max(0.001, 0.25), Math.max(0.001, 0.25), 2, 16, 1, true), tubeMat);
-        group.add(tube);
-        // Bottom cap
+        group.add(new THREE.Mesh(new THREE.CylinderGeometry(Math.max(0.001, 0.25), Math.max(0.001, 0.25), 2, 16, 1, true), tubeMat));
         const cap = new THREE.Mesh(new THREE.CircleGeometry(Math.max(0.001, 0.25), 16), tubeMat.clone());
-        cap.rotation.x = Math.PI / 2;
-        cap.position.y = -1;
-        group.add(cap);
-        // Liquid inside
+        cap.rotation.x = Math.PI / 2; cap.position.y = -1; group.add(cap);
         const liqH = 1.2 + Math.random() * 0.4;
         const liq = new THREE.Mesh(new THREE.CylinderGeometry(Math.max(0.001, 0.22), Math.max(0.001, 0.22), liqH, 16), liquidMats[i]);
-        liq.position.y = -1 + liqH / 2;
-        group.add(liq);
-        // Rim
+        liq.position.y = -1 + liqH / 2; group.add(liq);
         const rim = new THREE.Mesh(new THREE.TorusGeometry(Math.max(0.001, 0.26), Math.max(0.001, 0.03), 8, 16), new THREE.MeshStandardMaterial({ color: 0x00f0ff, emissive: 0x00f0ff, emissiveIntensity: 0.3 }));
-        rim.rotation.x = Math.PI / 2;
-        rim.position.y = 1;
-        group.add(rim);
-
+        rim.rotation.x = Math.PI / 2; rim.position.y = 1; group.add(rim);
         group.position.set(pos[0], pos[1], pos[2]);
         group.userData = { baseY: pos[1], phase: i * 1.2 };
         testTubes.push(group);
         scene.add(group);
     });
 
-    // Blood cells
     const cellGeo = new THREE.SphereGeometry(Math.max(0.001, 0.15), 16, 16);
     const cellMat = new THREE.MeshStandardMaterial({ color: 0xff2244, emissive: 0xff0022, emissiveIntensity: 0.3, metalness: 0.2, roughness: 0.4 });
     const whiteCellMat = new THREE.MeshStandardMaterial({ color: 0xeeeeff, emissive: 0xaaaacc, emissiveIntensity: 0.2, metalness: 0.1, roughness: 0.5 });
@@ -783,30 +754,26 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
         scene.add(cell);
     }
 
-    // Molecular structure - floating atom cluster
     const molGroup = new THREE.Group();
     const atomGeo = new THREE.SphereGeometry(Math.max(0.001, 0.12), 12, 12);
     const atomCyan = new THREE.MeshStandardMaterial({ color: 0x00f0ff, emissive: 0x00f0ff, emissiveIntensity: 0.6 });
     const atomPurple = new THREE.MeshStandardMaterial({ color: 0x8b5cf6, emissive: 0x8b5cf6, emissiveIntensity: 0.6 });
-    const bondGeo = new THREE.CylinderGeometry(Math.max(0.001, 0.02), Math.max(0.001, 0.02), 1, 6);
     const bondMat = new THREE.MeshStandardMaterial({ color: 0x334466, emissive: 0x00f0ff, emissiveIntensity: 0.1 });
-
     const atomPositions = [[0, 0, 0], [1.2, 0.5, 0], [-0.8, 0.8, 0.5], [0.3, -0.9, -0.3], [-0.5, -0.3, 1], [0.9, -0.5, 0.8]];
     atomPositions.forEach((pos, i) => {
         const atom = new THREE.Mesh(atomGeo, i % 2 === 0 ? atomCyan : atomPurple);
         atom.position.set(pos[0], pos[1], pos[2]);
         molGroup.add(atom);
-        // Bonds to nearby atoms
         atomPositions.forEach((pos2, j) => {
             if (j > i) {
-                const d = Math.sqrt((pos[0] - pos2[0]) ** 2 + (pos[1] - pos2[1]) ** 2 + (pos[2] - pos2[2]) ** 2);
+                const d = Math.sqrt((pos[0]-pos2[0])**2+(pos[1]-pos2[1])**2+(pos[2]-pos2[2])**2);
                 if (d < 1.8) {
-                    const mid = new THREE.Vector3((pos[0] + pos2[0]) / 2, (pos[1] + pos2[1]) / 2, (pos[2] + pos2[2]) / 2);
-                    const bond = new THREE.Mesh(bondGeo, bondMat);
+                    const mid = new THREE.Vector3((pos[0]+pos2[0])/2,(pos[1]+pos2[1])/2,(pos[2]+pos2[2])/2);
+                    const bond = new THREE.Mesh(new THREE.CylinderGeometry(Math.max(0.001,0.02),Math.max(0.001,0.02),Math.max(0.001,d),6), bondMat);
                     bond.position.copy(mid);
                     bond.scale.y = Math.max(0.001, d);
-                    bond.lookAt(new THREE.Vector3(pos2[0], pos2[1], pos2[2]));
-                    bond.rotateX(Math.PI / 2);
+                    bond.lookAt(new THREE.Vector3(pos2[0],pos2[1],pos2[2]));
+                    bond.rotateX(Math.PI/2);
                     molGroup.add(bond);
                 }
             }
@@ -816,74 +783,44 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
     molGroup.scale.setScalar(1.5);
     scene.add(molGroup);
 
-    // Floating particles
     const fpCount = 400;
     const fpPos = new Float32Array(fpCount * 3);
     const fpCol = new Float32Array(fpCount * 3);
     for (let i = 0; i < fpCount; i++) {
-        fpPos[i * 3] = (Math.random() - 0.5) * 16;
-        fpPos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-        fpPos[i * 3 + 2] = (Math.random() - 0.5) * 16;
-        const c = [new THREE.Color(0x00f0ff), new THREE.Color(0x8b5cf6)][Math.floor(Math.random() * 2)];
-        fpCol[i * 3] = c.r; fpCol[i * 3 + 1] = c.g; fpCol[i * 3 + 2] = c.b;
+        fpPos[i*3]=(Math.random()-.5)*16;fpPos[i*3+1]=(Math.random()-.5)*10;fpPos[i*3+2]=(Math.random()-.5)*16;
+        const c=[new THREE.Color(0x00f0ff),new THREE.Color(0x8b5cf6)][Math.floor(Math.random()*2)];
+        fpCol[i*3]=c.r;fpCol[i*3+1]=c.g;fpCol[i*3+2]=c.b;
     }
     const fpGeo = new THREE.BufferGeometry();
     fpGeo.setAttribute('position', new THREE.BufferAttribute(fpPos, 3));
     fpGeo.setAttribute('color', new THREE.BufferAttribute(fpCol, 3));
     scene.add(new THREE.Points(fpGeo, new THREE.PointsMaterial({ size: 0.03, vertexColors: true, transparent: true, opacity: 0.5, sizeAttenuation: true })));
 
-    // Scanner ring
-    const scanRingGeo = new THREE.TorusGeometry(Math.max(0.001, 3), Math.max(0.001, 0.02), 8, 64);
-    const scanRingMat = new THREE.MeshStandardMaterial({ color: 0x00f0ff, emissive: 0x00f0ff, emissiveIntensity: 0.5, transparent: true, opacity: 0.3 });
-    const scanRing = new THREE.Mesh(scanRingGeo, scanRingMat);
+    const scanRing = new THREE.Mesh(new THREE.TorusGeometry(Math.max(0.001,3),Math.max(0.001,0.02),8,64), new THREE.MeshStandardMaterial({ color: 0x00f0ff, emissive: 0x00f0ff, emissiveIntensity: 0.5, transparent: true, opacity: 0.3 }));
     scanRing.rotation.x = Math.PI / 2;
     scene.add(scanRing);
 
-    // FPS counter
     let frames = 0, lastTime = performance.now();
     const fpsEl = document.getElementById('labFps');
-
-    // Animate
     const clock = new THREE.Clock();
     function animate() {
         requestAnimationFrame(animate);
         const t = clock.getElapsedTime();
-
-        // Float test tubes
-        testTubes.forEach(tube => {
-            tube.position.y = tube.userData.baseY + Math.sin(t * 0.8 + tube.userData.phase) * 0.15;
-        });
-
-        // Move blood cells
+        testTubes.forEach(tube => { tube.position.y = tube.userData.baseY + Math.sin(t * 0.8 + tube.userData.phase) * 0.15; });
         bloodCells.forEach(cell => {
             cell.position.add(cell.userData.vel);
-            cell.rotation.x += 0.01;
-            cell.rotation.z += 0.005;
-            // Bounce
-            ['x', 'y', 'z'].forEach(axis => {
-                if (Math.abs(cell.position[axis]) > 5) cell.userData.vel[axis] *= -1;
-            });
+            cell.rotation.x += 0.01; cell.rotation.z += 0.005;
+            ['x','y','z'].forEach(a => { if(Math.abs(cell.position[a])>5) cell.userData.vel[a]*=-1; });
             cell.position.y += Math.sin(t + cell.userData.phase) * 0.002;
         });
-
-        // Rotate molecular structure
         molGroup.rotation.y = t * 0.4;
         molGroup.rotation.x = Math.sin(t * 0.3) * 0.2;
-
-        // Scanner ring
         scanRing.position.y = -3 + ((t * 0.5) % 1) * 8;
-        scanRingMat.opacity = 0.3 - ((t * 0.5) % 1) * 0.3;
-
+        scanRing.material.opacity = 0.3 - ((t * 0.5) % 1) * 0.3;
         controls.update();
         composer.render();
-
-        // FPS
         frames++;
-        if (performance.now() - lastTime >= 1000) {
-            fpsEl.textContent = frames + ' FPS';
-            frames = 0;
-            lastTime = performance.now();
-        }
+        if (performance.now() - lastTime >= 1000) { fpsEl.textContent = frames + ' FPS'; frames = 0; lastTime = performance.now(); }
     }
     animate();
 
@@ -901,64 +838,52 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* ===== Loader ===== */
+    /* Loader */
     setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');
         animateHero();
     }, 2400);
 
-    /* ===== Lenis Smooth Scroll ===== */
+    /* Lenis */
     const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
-    // Sync with GSAP
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    /* ===== Cursor ===== */
+    /* Cursor */
     const dot = document.getElementById('cursorDot');
     const ring = document.getElementById('cursorRing');
     const glow = document.getElementById('cursorGlow');
     let cx = 0, cy = 0, rx = 0, ry = 0;
-
     document.addEventListener('mousemove', (e) => {
         cx = e.clientX; cy = e.clientY;
-        dot.style.left = cx + 'px';
-        dot.style.top = cy + 'px';
-        glow.style.left = cx + 'px';
-        glow.style.top = cy + 'px';
+        dot.style.left = cx + 'px'; dot.style.top = cy + 'px';
+        glow.style.left = cx + 'px'; glow.style.top = cy + 'px';
     });
-
     function animateCursor() {
-        rx += (cx - rx) * 0.15;
-        ry += (cy - ry) * 0.15;
-        ring.style.left = rx + 'px';
-        ring.style.top = ry + 'px';
+        rx += (cx - rx) * 0.15; ry += (cy - ry) * 0.15;
+        ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
         requestAnimationFrame(animateCursor);
     }
     animateCursor();
-
-    // Hover effect on interactive elements
     document.querySelectorAll('a, button, .glass-hover, input, textarea').forEach(el => {
         el.addEventListener('mouseenter', () => ring.classList.add('hover'));
         el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
     });
 
-    /* ===== Scroll Progress ===== */
+    /* Scroll Progress */
     const progressBar = document.getElementById('scroll-progress');
     window.addEventListener('scroll', () => {
-        const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-        progressBar.style.width = (scrolled * 100) + '%';
+        progressBar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
     });
 
-    /* ===== Nav Scroll ===== */
+    /* Nav */
     const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 50);
-    });
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
 
-    /* ===== Mobile Menu ===== */
+    /* Mobile Menu */
     const mobileBtn = document.getElementById('mobileMenuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     mobileBtn.addEventListener('click', () => {
@@ -966,52 +891,40 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileBtn.innerHTML = mobileMenu.classList.contains('hidden') ? '<i class="fa-solid fa-bars"></i>' : '<i class="fa-solid fa-xmark"></i>';
     });
     document.querySelectorAll('.mobile-nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-            mobileBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-        });
+        link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); mobileBtn.innerHTML = '<i class="fa-solid fa-bars"></i>'; });
     });
 
-    /* ===== Hero Animations ===== */
+    /* ===== Hero Animations — FIXED: cleaner stagger, text-shadow for contrast ===== */
     function animateHero() {
-        const tl = gsap.timeline();
-        tl.to('#heroTag', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-          .to('#heroName', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, '-=0.4')
-          .to('#heroSub', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5')
-          .to('#typingText', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3')
-          .to('#heroCTA', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3')
-          .add(() => startTyping(), '-=0.8');
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        tl.to('#heroTag', { opacity: 1, y: 0, duration: 0.7 }, 0.2)
+          .to('#heroName', { opacity: 1, y: 0, duration: 0.9 }, 0.4)
+          .to('#heroSub', { opacity: 1, y: 0, duration: 0.7 }, 0.7)
+          .to('#typingLine', { opacity: 1, y: 0, duration: 0.5 }, 0.9)
+          .to('#heroCTA', { opacity: 1, y: 0, duration: 0.7 }, 1.0)
+          .add(() => startTyping(), 1.0);
     }
 
-    /* ===== Typing Animation ===== */
-    const skills = ['Hematology', 'Clinical Chemistry', 'Microbiology', 'Histopathology', 'Phlebotomy', 'Immunology', 'Quality Assurance', 'Patient Care', 'Virology', 'Biosafety'];
+    /* Typing */
+    const skills = ['Hematology','Clinical Chemistry','Microbiology','Histopathology','Phlebotomy','Immunology','Quality Assurance','Patient Care','Virology','Biosafety','Special Chemistry','Data Analysis'];
     let skillIdx = 0, charIdx = 0, isDeleting = false;
     const typingEl = document.getElementById('typingContent');
-
     function startTyping() {
         const current = skills[skillIdx];
         if (!isDeleting) {
             typingEl.textContent = current.substring(0, charIdx + 1);
             charIdx++;
-            if (charIdx === current.length) {
-                setTimeout(() => { isDeleting = true; startTyping(); }, 1800);
-                return;
-            }
-            setTimeout(startTyping, 60 + Math.random() * 40);
+            if (charIdx === current.length) { setTimeout(() => { isDeleting = true; startTyping(); }, 1800); return; }
+            setTimeout(startTyping, 55 + Math.random() * 35);
         } else {
             typingEl.textContent = current.substring(0, charIdx - 1);
             charIdx--;
-            if (charIdx === 0) {
-                isDeleting = false;
-                skillIdx = (skillIdx + 1) % skills.length;
-                setTimeout(startTyping, 300);
-                return;
-            }
-            setTimeout(startTyping, 30);
+            if (charIdx === 0) { isDeleting = false; skillIdx = (skillIdx + 1) % skills.length; setTimeout(startTyping, 250); return; }
+            setTimeout(startTyping, 25);
         }
     }
 
-    /* ===== Skills Data & Rendering ===== */
+    /* Skills */
     const skillsData = [
         { name: 'Hematology', icon: 'fa-droplet', color: '--cyan', level: 92 },
         { name: 'Chemistry', icon: 'fa-flask', color: '--purple', level: 88 },
@@ -1028,282 +941,129 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'Data Analysis', icon: 'fa-chart-line', color: '--green', level: 80 },
         { name: 'MS Office & Digital', icon: 'fa-laptop', color: '--blue', level: 90 },
     ];
-
     const skillsGrid = document.getElementById('skillsGrid');
-    skillsData.forEach((skill, i) => {
-        const colorVar = `var(${skill.color})`;
-        const circumference = 2 * Math.PI * 36;
-        const offset = circumference - (skill.level / 100) * circumference;
+    skillsData.forEach((skill) => {
+        const cv = `var(${skill.color})`;
+        const circ = 2 * Math.PI * 36;
+        const offset = circ - (skill.level / 100) * circ;
         const card = document.createElement('div');
         card.className = 'glass glass-hover p-5 flex flex-col items-center text-center relative overflow-hidden group skill-item';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(40px)';
+        card.style.opacity = '0'; card.style.transform = 'translateY(40px)';
         card.innerHTML = `
             <div class="relative w-20 h-20 mb-4">
                 <svg class="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
                     <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"/>
-                    <circle class="skill-ring" cx="40" cy="40" r="36" fill="none" stroke="${colorVar}" stroke-width="3" stroke-linecap="round"
-                        stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}" data-target="${offset}"
-                        style="filter:drop-shadow(0 0 6px ${colorVar})"/>
+                    <circle class="skill-ring" cx="40" cy="40" r="36" fill="none" stroke="${cv}" stroke-width="3" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ}" data-target="${offset}" style="filter:drop-shadow(0 0 6px ${cv})"/>
                 </svg>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <i class="fa-solid ${skill.icon} text-lg" style="color:${colorVar}"></i>
-                </div>
+                <div class="absolute inset-0 flex items-center justify-center"><i class="fa-solid ${skill.icon} text-lg" style="color:${cv}"></i></div>
             </div>
             <h4 class="font-space text-sm font-semibold text-white mb-1">${skill.name}</h4>
-            <p class="font-orbitron text-xs" style="color:${colorVar}">${skill.level}%</p>
-            <div class="absolute inset-0 bg-gradient-to-t from-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background:radial-gradient(circle at center, ${colorVar.replace(')', ',0.05)')}, transparent 70%)"></div>
-        `;
+            <p class="font-orbitron text-xs" style="color:${cv}">${skill.level}%</p>`;
         skillsGrid.appendChild(card);
     });
 
-    /* ===== Experience Timeline ===== */
+    /* Experience */
     const experiences = [
-        {
-            title: 'Phlebotomist cum Receptionist',
-            company: 'Islamabad Diagnostic Centre (IDC)',
-            period: 'Dec 2024 – Present',
-            desc: 'Performing venipuncture and capillary blood collection, managing patient reception, maintaining phlebotomy workflow, ensuring sample integrity, and coordinating with laboratory departments for timely results delivery.',
-            icon: 'fa-hospital',
-            color: '--cyan',
-            current: true
-        },
-        {
-            title: 'Intern',
-            company: 'Chughtai Lab',
-            period: 'Feb 2026 – Apr 2026',
-            desc: 'Gained hands-on experience in clinical pathology, operated automated analyzers, performed quality control procedures, assisted in sample processing across hematology, chemistry, and microbiology departments.',
-            icon: 'fa-flask-vial',
-            color: '--purple',
-            current: false
-        },
-        {
-            title: 'Clinical Rotation',
-            company: 'Fauji Foundation Hospital',
-            period: '2023 – 2024',
-            desc: 'Completed intensive clinical rotations covering all major laboratory sections including blood bank, histopathology, molecular diagnostics, and serology under professional supervision.',
-            icon: 'fa-building',
-            color: '--blue',
-            current: false
-        },
-        {
-            title: 'Clinical Training',
-            company: 'AFIP (Armed Forces Institute of Pathology)',
-            period: '2023',
-            desc: 'Received advanced training in forensic pathology, toxicology screening, advanced immunohistochemistry techniques, and military-grade diagnostic protocols.',
-            icon: 'fa-shield',
-            color: '--green',
-            current: false
-        },
-        {
-            title: 'Clinical Rotation',
-            company: 'DHQ Hospital Khanewal',
-            period: '2022 – 2023',
-            desc: 'Developed foundational laboratory skills in a high-volume public hospital setting, including emergency sample processing, blood grouping, cross-matching, and basic microbiological culture techniques.',
-            icon: 'fa-hospital-user',
-            color: '--pink',
-            current: false
-        }
+        { title:'Phlebotomist cum Receptionist', company:'Islamabad Diagnostic Centre (IDC)', period:'Dec 2024 – Present', desc:'Performing venipuncture and capillary blood collection, managing patient reception, maintaining phlebotomy workflow, ensuring sample integrity, and coordinating with laboratory departments for timely results delivery.', icon:'fa-hospital', color:'--cyan', current:true },
+        { title:'Intern', company:'Chughtai Lab', period:'Feb 2026 – Apr 2026', desc:'Gained hands-on experience in clinical pathology, operated automated analyzers, performed quality control procedures, assisted in sample processing across hematology, chemistry, and microbiology departments.', icon:'fa-flask-vial', color:'--purple', current:false },
+        { title:'Clinical Rotation', company:'Fauji Foundation Hospital', period:'2023 – 2024', desc:'Completed intensive clinical rotations covering all major laboratory sections including blood bank, histopathology, molecular diagnostics, and serology under professional supervision.', icon:'fa-building', color:'--blue', current:false },
+        { title:'Clinical Training', company:'AFIP (Armed Forces Institute of Pathology)', period:'2023', desc:'Received advanced training in forensic pathology, toxicology screening, advanced immunohistochemistry techniques, and military-grade diagnostic protocols.', icon:'fa-shield', color:'--green', current:false },
+        { title:'Clinical Rotation', company:'DHQ Hospital Khanewal', period:'2022 – 2023', desc:'Developed foundational laboratory skills in a high-volume public hospital setting, including emergency sample processing, blood grouping, cross-matching, and basic microbiological culture techniques.', icon:'fa-hospital-user', color:'--pink', current:false }
     ];
-
     const timeline = document.getElementById('timeline');
     experiences.forEach((exp, i) => {
-        const colorVar = `var(${exp.color})`;
+        const cv = `var(${exp.color})`;
         const isLeft = i % 2 === 0;
         const item = document.createElement('div');
-        item.className = `relative mb-16 last:mb-0 exp-item`;
-        item.style.opacity = '0';
-        item.style.transform = isLeft ? 'translateX(-60px)' : 'translateX(60px)';
+        item.className = 'relative mb-16 last:mb-0 exp-item';
+        item.style.opacity = '0'; item.style.transform = isLeft ? 'translateX(-60px)' : 'translateX(60px)';
         item.innerHTML = `
-            <div class="timeline-node hidden md:block" style="top:24px;${exp.current ? 'box-shadow:0 0 25px var(--cyan),0 0 50px rgba(0,240,255,.2);animation:pulse 2s infinite' : ''}"></div>
-            <!-- Mobile node -->
-            <div class="md:hidden absolute left-[14px] top-6 w-3 h-3 rounded-full" style="background:${colorVar};box-shadow:0 0 15px ${colorVar}"></div>
-            <!-- Mobile line -->
-            ${i < experiences.length - 1 ? '<div class="md:hidden absolute left-[15px] top-10 bottom-0 w-[2px]" style="background:linear-gradient(to bottom,' + colorVar + ',transparent)"></div>' : ''}
-            <div class="md:w-[calc(50%-40px)] ${isLeft ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'} pl-10 md:pl-0">
+            <div class="timeline-node hidden md:block" style="top:24px;${exp.current?'box-shadow:0 0 25px var(--cyan),0 0 50px rgba(0,240,255,.2);animation:pulse 2s infinite':''}"></div>
+            <div class="md:hidden absolute left-[14px] top-6 w-3 h-3 rounded-full" style="background:${cv};box-shadow:0 0 15px ${cv}"></div>
+            ${i < experiences.length - 1 ? `<div class="md:hidden absolute left-[15px] top-10 bottom-0 w-[2px]" style="background:linear-gradient(to bottom,${cv},transparent)"></div>` : ''}
+            <div class="md:w-[calc(50%-40px)] ${isLeft?'md:mr-auto md:pr-8':'md:ml-auto md:pl-8'} pl-10 md:pl-0">
                 <div class="glass glass-hover p-6 relative overflow-hidden group">
-                    <div class="hud-corner top-0 left-0 w-4 h-4 border-t border-l" style="border-color:${colorVar}40"></div>
-                    <div class="hud-corner top-0 right-0 w-4 h-4 border-t border-r" style="border-color:${colorVar}40"></div>
-                    ${exp.current ? '<div class="absolute top-3 right-3 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-cy-green animate-pulse"></span><span class="font-orbitron text-[9px] text-cy-green tracking-wider">ACTIVE</span></div>' : ''}
+                    <div class="hud-corner top-0 left-0 w-4 h-4 border-t border-l" style="border-color:${cv}40"></div>
+                    <div class="hud-corner top-0 right-0 w-4 h-4 border-t border-r" style="border-color:${cv}40"></div>
+                    ${exp.current?'<div class="absolute top-3 right-3 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-cy-green animate-pulse"></span><span class="font-orbitron text-[9px] text-cy-green tracking-wider">ACTIVE</span></div>':''}
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:${colorVar}15;border:1px solid ${colorVar}30">
-                            <i class="fa-solid ${exp.icon} text-sm" style="color:${colorVar}"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-orbitron text-sm font-bold text-white">${exp.title}</h3>
-                            <p class="text-xs font-space" style="color:${colorVar}">${exp.company}</p>
-                        </div>
+                        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:${cv}15;border:1px solid ${cv}30"><i class="fa-solid ${exp.icon} text-sm" style="color:${cv}"></i></div>
+                        <div><h3 class="font-orbitron text-sm font-bold text-white">${exp.title}</h3><p class="text-xs font-space" style="color:${cv}">${exp.company}</p></div>
                     </div>
                     <p class="font-orbitron text-[10px] tracking-wider text-cy-dim mb-3">${exp.period}</p>
                     <p class="text-cy-dim font-poppins text-xs leading-relaxed">${exp.desc}</p>
-                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" style="background:linear-gradient(90deg,transparent,${colorVar}08,transparent)"></div>
+                    <div class="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" style="background:linear-gradient(90deg,transparent,${cv}08,transparent)"></div>
                 </div>
             </div>
-            <!-- Floating icon (desktop) -->
-            <div class="hidden md:block absolute top-4 float-icon text-2xl ${isLeft ? 'right-[calc(50%+30px)]' : 'left-[calc(50%+30px)]'}" style="color:${colorVar};animation-delay:${i * 0.5}s;opacity:.1">
-                <i class="fa-solid ${exp.icon}"></i>
-            </div>
-        `;
+            <div class="hidden md:block absolute top-4 float-icon text-2xl ${isLeft?'right-[calc(50%+30px)]':'left-[calc(50%+30px)]'}" style="color:${cv};animation-delay:${i*.5}s;opacity:.1"><i class="fa-solid ${exp.icon}"></i></div>`;
         timeline.appendChild(item);
     });
 
-    /* ===== GSAP Scroll Animations ===== */
+    /* GSAP ScrollTriggers */
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-    // About
     gsap.utils.toArray('.about-reveal').forEach((el, i) => {
-        gsap.fromTo(el, { opacity: 0, y: 50 }, {
-            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
-            delay: i * 0.15
+        gsap.fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' }, delay: i * 0.15 });
+    });
+    ScrollTrigger.create({ trigger: '#skillsGrid', start: 'top 80%', once: true, onEnter: () => {
+        document.querySelectorAll('.skill-item').forEach((item, i) => {
+            gsap.to(item, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: i * 0.06 });
+            const ring = item.querySelector('.skill-ring');
+            if (ring) setTimeout(() => { ring.style.strokeDashoffset = ring.dataset.target; }, 300 + i * 60);
         });
-    });
+    }});
+    gsap.utils.toArray('.exp-reveal').forEach(el => { gsap.fromTo(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' } }); });
+    gsap.utils.toArray('.exp-item').forEach(item => { gsap.to(item, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: item, start: 'top 85%' } }); });
+    gsap.utils.toArray('.edu-reveal').forEach((el, i) => { gsap.fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' }, delay: i * 0.2 }); });
+    gsap.utils.toArray('.cert-reveal').forEach((el, i) => { gsap.fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' }, delay: i * 0.15 }); });
+    gsap.utils.toArray('.lab-reveal').forEach((el, i) => { gsap.fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' }, delay: i * 0.2 }); });
+    gsap.utils.toArray('.contact-reveal').forEach((el, i) => { gsap.fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' }, delay: i * 0.2 }); });
 
-    // Skills
-    ScrollTrigger.create({
-        trigger: '#skillsGrid',
-        start: 'top 80%',
-        onEnter: () => {
-            document.querySelectorAll('.skill-item').forEach((item, i) => {
-                gsap.to(item, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: i * 0.06 });
-                // Animate ring
-                const ring = item.querySelector('.skill-ring');
-                if (ring) {
-                    setTimeout(() => { ring.style.strokeDashoffset = ring.dataset.target; }, 300 + i * 60);
-                }
-            });
-        },
-        once: true
-    });
-
-    // Experience
-    gsap.utils.toArray('.exp-reveal').forEach((el) => {
-        gsap.fromTo(el, { opacity: 0, y: 40 }, {
-            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 85%' }
-        });
-    });
-    gsap.utils.toArray('.exp-item').forEach((item) => {
-        gsap.to(item, {
-            opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: item, start: 'top 85%' }
-        });
-    });
-
-    // Education
-    gsap.utils.toArray('.edu-reveal').forEach((el, i) => {
-        gsap.fromTo(el, { opacity: 0, y: 50 }, {
-            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-            delay: i * 0.2
-        });
-    });
-
-    // Certifications
-    gsap.utils.toArray('.cert-reveal').forEach((el, i) => {
-        gsap.fromTo(el, { opacity: 0, y: 50 }, {
-            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-            delay: i * 0.15
-        });
-    });
-
-    // Lab scene
-    gsap.utils.toArray('.lab-reveal').forEach((el, i) => {
-        gsap.fromTo(el, { opacity: 0, y: 50 }, {
-            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-            delay: i * 0.2
-        });
-    });
-
-    // Contact
-    gsap.utils.toArray('.contact-reveal').forEach((el, i) => {
-        gsap.fromTo(el, { opacity: 0, y: 50 }, {
-            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-            delay: i * 0.2
-        });
-    });
-
-    /* ===== Nav smooth scroll ===== */
+    /* Nav smooth scroll */
     document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const target = document.querySelector(link.getAttribute('href'));
-            if (target) lenis.scrollTo(target, { offset: -60 });
-        });
+        link.addEventListener('click', (e) => { e.preventDefault(); const t = document.querySelector(link.getAttribute('href')); if (t) lenis.scrollTo(t, { offset: -60 }); });
     });
 
-    /* ===== Active nav link ===== */
+    /* Active nav */
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
     window.addEventListener('scroll', () => {
         let current = '';
-        sections.forEach(section => {
-            const top = section.offsetTop - 200;
-            if (window.scrollY >= top) current = section.id;
-        });
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-        });
+        sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+        navLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
     });
 
-    /* ===== Cert Slider ===== */
+    /* Cert slider */
     const certTrack = document.getElementById('certTrack');
     document.getElementById('certLeft').addEventListener('click', () => certTrack.scrollBy({ left: -344, behavior: 'smooth' }));
     document.getElementById('certRight').addEventListener('click', () => certTrack.scrollBy({ left: 344, behavior: 'smooth' }));
-
-    // 3D tilt on cert cards
     certTrack.querySelectorAll('.cert-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            card.style.transform = `perspective(600px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`;
+            const r = card.getBoundingClientRect();
+            card.style.transform = `perspective(600px) rotateY(${(e.clientX-r.left)/r.width-.5*12}deg) rotateX(${-(e.clientY-r.top)/r.height+.5*12}deg)`;
         });
         card.addEventListener('mouseleave', () => { card.style.transform = ''; });
     });
 
-    /* ===== Contact Form ===== */
+    /* Contact form */
     document.getElementById('contactForm').addEventListener('submit', (e) => {
         e.preventDefault();
         showToast('Message sent successfully! I will get back to you soon.');
         e.target.reset();
     });
 
-    /* ===== Toast ===== */
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3500);
-    }
+    /* Toast */
+    function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500); }
 
-    /* ===== Easter Egg ===== */
-    let konamiCount = 0;
-    const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-    document.addEventListener('keydown', (e) => {
-        if (e.keyCode === konamiCode[konamiCount]) {
-            konamiCount++;
-            if (konamiCount === konamiCode.length) {
-                const egg = document.getElementById('easterEgg');
-                egg.classList.add('show');
-                setTimeout(() => egg.classList.remove('show'), 3000);
-                konamiCount = 0;
-            }
-        } else { konamiCount = 0; }
-    });
+    /* Easter egg */
+    let kc = 0; const kcode = [38,38,40,40,37,39,37,39,66,65];
+    document.addEventListener('keydown', (e) => { if(e.keyCode===kcode[kc]){kc++;if(kc===kcode.length){document.getElementById('easterEgg').classList.add('show');setTimeout(()=>document.getElementById('easterEgg').classList.remove('show'),3000);kc=0;}}else{kc=0;} });
 
-    /* ===== Parallax floating icons on scroll ===== */
+    /* Parallax float icons */
     window.addEventListener('scroll', () => {
         const sy = window.scrollY;
-        document.querySelectorAll('.float-icon').forEach((icon, i) => {
-            icon.style.transform = `translateY(${-sy * (0.02 + i * 0.01)}px) rotate(${sy * 0.02}deg)`;
-        });
+        document.querySelectorAll('.float-icon').forEach((icon, i) => { icon.style.transform = `translateY(${-sy*(0.02+i*.01)}px) rotate(${sy*.02}deg)`; });
     });
-
 });
 </script>
 </body>
